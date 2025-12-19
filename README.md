@@ -50,10 +50,8 @@ flowchart TD
   Input --> CalIRPN["Вызов функции obrat_polsk_not"]
   CalIRPN --> ProcessRPN["Преобразование выражения в обратную польскую запись"]
   ProcessRPN --> CheckX{"Есть ли переменная x?"}
-  CheckX -->|Да|
-  AskX["Запрос значения x y пользователя"]
-  CheckX -->|Нет|
-  SkipX["Пропустить запрос х"]
+  CheckX -- Да --> AskX["Запрос значения x y пользователя"]
+  CheckX --> Нет -- > SkipX["Пропустить запрос х"]
   AskX --> BuildRPN["Построение ОПН"]
   SkipX --> BuildRPN
   BuildRPN --> OutputRPN["Вывод преобразованного выражения в ОПН"]
