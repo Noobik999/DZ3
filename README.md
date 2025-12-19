@@ -44,49 +44,24 @@
 ## Продемонстрируем принцип работы программы с помощью блок-схемы ниже:
 
 ```mermaid
-flowchart TD
-  Start["Начало программы"] --> Output1["Выводинструкцийo формате чисел и градусах"]
-  Output1 --> Input["Ввод математического выражения пользователем"]
-  Input --> CalIRPN["Вызов функции obrat_polsk_not"]
-  CalIRPN --> ProcessRPN["Преобразование выражения в обратную польскую запись"]
-  ProcessRPN --> CheckX{"Есть ли переменная x?"}
-  CheckX -- Да --> AskX["Запрос значения x y пользователя"]
-  CheckX -- Нет -- > SkipX["Пропустить запрос х"]
-  AskX --> BuildRPN["Построение ОПН"]
-  SkipX --> BuildRPN
-  BuildRPN --> OutputRPN["Вывод преобразованного выражения в ОПН"]
-  OutputRPN --> CallSolve["Вызов функции reshenie_obr_polsk_not"]
-  CallSolve --> Calc[Вычисление результата<br>по ОПН]
-  Calc --> CheckError{"Есть ли ошибка вычисления?"}
-  CheckError -- Да --> Error["Вывод сообщения об ошибке"]
-  CheckError -- He --> OutputResult["Вывод результата"]
-  Error --> End
-  OutputResult --> End["Конец программы"]
-  subgraph "Функция obrat_polsk_not"
-    ProcessRPN --> Parse["Посимвольный анализ строки"]
-    Parse --> Identify["Идентификация элементов: - Числа -Операторы - Функции sin/cos/tan/ctg/exp - Константы pi/e - Скобки Переменная x"]
-    Identify --> Shunting_Yard["Алгоритм сортировочной станции для ОПН"]
-    Shunting_Yard --> ReturnRPN["Возврат вектора ОПН"]
-  end
-  subgraph "Функция
-    reshenie_obr_polsk_not"
-    Calc --> InitStack["Инициализация стека для вычислений"]
-    InitStack --> ForEachToken["Обработка каждого токена ОПН"]
-    ForEachToken --> IsNumber{"Токен - число?"}
-    IsNumber -- Да --> PushNumber["Добавить число в стек"]
-    IsNumber -- Нет --> IsFunction{"Токен - функция?"}
-    IsFunction -- Да --> CalcFunction[Вычислить функцию, результат в стек]
-    IsFunction -- Нет --> IsOperator{"Токен - оператор?"}
-    IsOperator -- Да --> CalcOperation["Выполнить операцию, результат в стек"]
-    CalcFunction --> NextToken["Следующий токен"]
-    CalcOperation --> NextToken
-    PushNumber --> NextToken
-    IsOperator -- Нет --> NextToken
-    NextToken --> MoreTokens{"Есть ещё токены?"}
-    MoreTokens -- Да --> ForEachToken
-    MoreTokens -- Нет --> GetResult["Взять результат c вершины стека"]
-    GetResult --> ReturnResult["Вернуть результат"]
-  end
+graph TD
+    Start[Начало программы] --> Output1[Вывод инструкций]
+    Output1 --> Input[Ввод выражения]
+    Input --> CallRPN[Вызов obrat_polsk_not]
+    CallRPN --> ProcessRPN[Преобразование в ОПН]
+    ProcessRPN --> CheckX{Есть x?}
+    CheckX -->|Да| AskX[Запрос x]
+    CheckX -->|Нет| SkipX[Пропустить]
+    AskX --> BuildRPN[Построение ОПН]
+    SkipX --> BuildRPN
+    BuildRPN --> OutputRPN[Вывод ОПН]
+    OutputRPN --> CallSolve[Вызов reshenie_obr_polsk_not]
+    CallSolve --> Calc[Вычисление]
+    Calc --> CheckError{Ошибка?}
+    CheckError -->|Да| Error[Вывод ошибки]
+    CheckError -->|Нет| OutputResult[Вывод результата]
+    Error --> End[Конец]
+    OutputResult --> End
 ```
 
 - В ходе работы был успешно разработан консольный калькулятор, способный обрабатывать сложные математические выражения. Программа использует эффективные алгоритмы обработки математических выражений.
