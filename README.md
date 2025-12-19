@@ -50,8 +50,10 @@ flowchart TD
   Input --> CalIRPN["Вызов функции obrat_polsk_not"]
   CalIRPN --> ProcessRPN["Преобразование выражения в обратную польскую запись"]
   ProcessRPN --> CheckX{"Есть ли переменная x?"}
-  CheckX -->|Да| AskX["Запрос значения x y пользователя"]
-  CheckX -->|Нет| SkipX["Пропустить запрос х"]
+  CheckX -->|Да|
+  AskX["Запрос значения x y пользователя"]
+  CheckX -->|Нет|
+  SkipX["Пропустить запрос х"]
   AskX --> BuildRPN["Построение ОПН"]
   SkipX --> BuildRPN
   BuildRPN --> OutputRPN["Вывод преобразованного выражения в ОПН"]
@@ -78,7 +80,8 @@ OutputResult["Вывод результата"]
     ForEachToken --> IsNumber{"Токен - число?"}
     IsNumber -->|Да|
     PushNumber["Добавить число в стек"]
-    IsNumber -->|Нет| IsFunction{"Токен - функция?"}
+    IsNumber -->|Нет|
+    IsFunction{"Токен - функция?"}
     IsFunction -->|Да|
     CalcFunction[Вычислить функцию, результат в стек]
     IsFunction -->|Нет| IsOperator{"Токен - оператор?"}
@@ -87,10 +90,13 @@ OutputResult["Вывод результата"]
     CalcFunction --> NextToken["Следующий токен"]
     CalcOperation --> NextToken
     PushNumber --> NextToken
-    IsOperator -->|Нет| NextToken
+    IsOperator -->|Нет|
+    NextToken
     NextToken --> MoreTokens{"Есть ещё токены?"}
-    MoreTokens -->|Да| ForEachToken
-    MoreTokens -->|Нет| GetResult["Взять результат c вершины стека"]
+    MoreTokens -->|Да|
+    ForEachToken
+    MoreTokens -->|Нет|
+    GetResult["Взять результат c вершины стека"]
     GetResult --> ReturnResult["Вернуть результат"]
   end
 ```
