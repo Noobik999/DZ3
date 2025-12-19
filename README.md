@@ -58,13 +58,15 @@ flowchart TD
   OutputRPN --> CallSolve["Вызов функции reshenie_obr_polsk_not"]
   CallSolve --> Calc[Вычисление результата<br>по ОПН]
   Calc --> CheckError{"Есть ли ошибка вычисления?"}
-  CheckError -->|Да| Error["Вывод сообщения об ошибке"]
-  CheckError -->|He| OutputResult["Вывод результата"]
+  CheckError -->|Да|
+  Error["Вывод сообщения об ошибке"]
+  CheckError -->|He|
+OutputResult["Вывод результата"]
   Error --> End
   OutputResult --> End["Конец программы"]
   subgraph "Функция obrat_polsk_not"
     ProcessRPN --> Parse["Посимвольный анализ строки"]
-    Parse --> Identify["Идентификация элементов: - Числа -Операторы - Функции sin/cos/tan/ctg/exp - Константы pi/e - Скобки - Переменная x"]
+    Parse --> Identify["Идентификация элементов: - Числа -Операторы - Функции sin/cos/tan/ctg/exp - Константы pi/e - Скобки Переменная x"]
     Identify --> Shunting_Yard["Алгоритм сортировочной станции для ОПН"]
     Shunting_Yard --> ReturnRPN["Возврат вектора ОПН"]
   end
