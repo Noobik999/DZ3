@@ -45,84 +45,50 @@
 
 ```mermaid
 graph TD
-Start [Начало программы] -->
-Output1[Вывод инструкций<br>o
-формате чисел и градусах]
-Output1 --> Input[Ввод
-математического<br>выражения
-пользователем]
-Input --> CalIRPN[Вызов
-функции<br>obrat_polsk_not]
-CalIRPN -->
-ProcessRPN[Преобразование
-выражения<br>в обратную польскую запись
-ProcessRPN --> CheckX{Есть
-ли<br>переменная x?}
-CheckX -->|Да| AskX[Запрос значения
-x<br>y пользователя]
-CheckX -->|Нет| SkipX[Пропустить
-запрос х
+Start [Начало программы] --> Output1[Выводинструкций<br>o формате чисел и градусах]
+Output1 --> Input[Ввод математического<br>выражения пользователем]
+Input --> CalIRPN[Вызов функции<br>obrat_polsk_not]
+CalIRPN --> ProcessRPN[Преобразование выражения<br>в обратную польскую запись ProcessRPN --> CheckX{Есть ли<br>переменная x?}
+CheckX -->|Да| AskX[Запрос значения x<br>y пользователя]
+CheckX -->|Нет| SkipX[Пропустить запрос х]
 AskX --> BuildRPN[Построение ОПН]
 SkipX →→> BuildRPN
-BuildRPN --> OutputRPN[Вывод
-преобразованного<br>выражения в
-ОПН]
-OutputRPN --> CallSolve[Вызов
-функции<br>reshenie_obr_polsk_not]
-CallSolve --> Calc[Вычисление
-результата<br>по ОПН]
-Calc --> CheckError{Есть
-ли<br>ошибка вычисления?}
-CheckError -->|Да| Error[Вывод
-сообщения<br>об ошибке]
-CheckError -->|He| OutputResult [Вывод
-результата]
+BuildRPN --> OutputRPN[Вывод преобразованного<br>выражения в ОПН]
+OutputRPN --> CallSolve[Вызов функции<br>reshenie_obr_polsk_not]
+CallSolve --> Calc[Вычисление результата<br>по ОПН]
+Calc --> CheckError{Есть ли<br>ошибка вычисления?}
+CheckError -->|Да| Error[Вывод сообщения<br>об ошибке]
+CheckError -->|He| OutputResult [Вывод результата]
 Error --> End
-OutputResult --> End[Конец
-программы]
+OutputResult --> End[Конец программы]
 subgraph "Функция obrat_polsk_not"
-ProcessRPN -->
-Parse [Посимвольный анализ строки]
-Parse --> Identify[Идентификация
-элементов:<br>- Числа<br>-Операторы<br>- Функции sin/cos/tan/ctg/ exp<br>- Константы pi/e<br>-
-Скобки<br>- Переменная x]
-Identify --> Shunting Yard[Алгоритм
-сортировочной<br>станции для ОПН]
-Shunting Yard --> ReturnRPN[Возврат
-вектора ОПН]
+ProcessRPN --> Parse [Посимвольный анализ строки]
+Parse --> Identify[Идентификация элементов:<br>- Числа<br>-Операторы<br>- Функции sin/cos/tan/ctg/exp<br>- Константы pi/e<br>- Скобки<br>- Переменная x]
+Identify --> Shunting Yard[Алгоритм сортировочной<br>станции для ОПН]
+Shunting Yard --> ReturnRPN[Возврат вектора ОПН]
 end
 subgraph "Функция
 reshenie_obr_polsk_not"
-Calc --> InitStack[Инициализация
-стека<br>для вычислений]
+Calc --> InitStack[Инициализация стека<br>для вычислений]
 InitStack -->
-ForEachToken[Обработка каждого токена
-ОПН]
-ForEachToken --> IsNumber{Токен -
-число?}
+ForEachToken[Обработка каждого токена ОПН]
+ForEachToken --> IsNumber{Токен - число?}
 IsNumber -->|Да|
 PushNumber [Добавить число в стек]
-IsNumber -->|Нет| IsFunction{Токен -
-функция?}
+IsNumber -->|Нет| IsFunction{Токен - функция?}
 IsFunction -->|Да|
 CalcFunction [Вычислить функцию, <br>результат в стек]
-IsFunction -->|Нет| IsOperator{Токен -
-оператор?}
+IsFunction -->|Нет| IsOperator{Токен - оператор?}
 IsOperator -->|Да|
-CalcOperation[Выполнить
-операцию, <br>результат в стек]
-CalcFunction -->
-NextToken [Следующий токен]
+CalcOperation[Выполнить операцию, <br>результат в стек]
+CalcFunction --> NextToken [Следующий токен]
 CalcOperation --> NextToken
 PushNumber --> NextToken
 IsOperator -->|Нет| NextToken
-NextToken --> MoreTokens{Есть
-ещё<br>токены?}
+NextToken --> MoreTokens{Есть ещё<br>токены?}
 MoreTokens -->|Да| ForEachToken
-MoreTokens -->|Нет| GetResult [Взять
-результат<br>c вершины стека]
-GetResult --> ReturnResult [Вернуть
-результат]
+MoreTokens -->|Нет| GetResult [Взять результат<br>c вершины стека]
+GetResult --> ReturnResult [Вернуть результат]
 end
 ```
 
