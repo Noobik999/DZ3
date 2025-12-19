@@ -59,11 +59,11 @@ flowchart TD
   CallSolve --> Calc[Вычисление результата<br>по ОПН]
   Calc --> CheckError{"Есть ли ошибка вычисления?"}
   CheckError -->|Да| Error["Вывод сообщения об ошибке"]
-  CheckError -->|He| OutputResult ["Вывод результата"]
+  CheckError -->|He| OutputResult["Вывод результата"]
   Error --> End
   OutputResult --> End["Конец программы"]
   subgraph "Функция obrat_polsk_not"
-    ProcessRPN --> Parse ["Посимвольный анализ строки"]
+    ProcessRPN --> Parse["Посимвольный анализ строки"]
     Parse --> Identify["Идентификация элементов: - Числа -Операторы - Функции sin/cos/tan/ctg/exp - Константы pi/e - Скобки - Переменная x"]
     Identify --> Shunting Yard["Алгоритм сортировочной станции для ОПН"]
     Shunting Yard --> ReturnRPN["Возврат вектора ОПН"]
@@ -75,21 +75,21 @@ flowchart TD
     ForEachToken["Обработка каждого токена ОПН"]
     ForEachToken --> IsNumber{"Токен - число?"}
     IsNumber -->|Да|
-    PushNumber ["Добавить число в стек"]
+    PushNumber["Добавить число в стек"]
     IsNumber -->|Нет| IsFunction{"Токен - функция?"}
     IsFunction -->|Да|
-    CalcFunction [Вычислить функцию, результат в стек]
+    CalcFunction[Вычислить функцию, результат в стек]
     IsFunction -->|Нет| IsOperator{"Токен - оператор?"}
     IsOperator -->|Да|
     CalcOperation["Выполнить операцию, результат в стек"]
-    CalcFunction --> NextToken ["Следующий токен"]
+    CalcFunction --> NextToken["Следующий токен"]
     CalcOperation --> NextToken
     PushNumber --> NextToken
     IsOperator -->|Нет| NextToken
     NextToken --> MoreTokens{"Есть ещё токены?"}
     MoreTokens -->|Да| ForEachToken
-    MoreTokens -->|Нет| GetResult ["Взять результат c вершины стека"]
-    GetResult --> ReturnResult ["Вернуть результат"]
+    MoreTokens -->|Нет| GetResult["Взять результат c вершины стека"]
+    GetResult --> ReturnResult["Вернуть результат"]
   end
 ```
 
