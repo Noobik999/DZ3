@@ -65,8 +65,8 @@ flowchart TD
   subgraph "Функция obrat_polsk_not"
     ProcessRPN --> Parse["Посимвольный анализ строки"]
     Parse --> Identify["Идентификация элементов: - Числа -Операторы - Функции sin/cos/tan/ctg/exp - Константы pi/e - Скобки - Переменная x"]
-    Identify --> Shunting Yard["Алгоритм сортировочной станции для ОПН"]
-    Shunting Yard --> ReturnRPN["Возврат вектора ОПН"]
+    Identify --> Shunting_Yard["Алгоритм сортировочной станции для ОПН"]
+    Shunting_Yard --> ReturnRPN["Возврат вектора ОПН"]
   end
   subgraph "Функция
     reshenie_obr_polsk_not"
