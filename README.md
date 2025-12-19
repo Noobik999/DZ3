@@ -51,17 +51,15 @@ flowchart TD
   CalIRPN --> ProcessRPN["Преобразование выражения в обратную польскую запись"]
   ProcessRPN --> CheckX{"Есть ли переменная x?"}
   CheckX -- Да --> AskX["Запрос значения x y пользователя"]
-  CheckX --> Нет -- > SkipX["Пропустить запрос х"]
+  CheckX -- Нет -- > SkipX["Пропустить запрос х"]
   AskX --> BuildRPN["Построение ОПН"]
   SkipX --> BuildRPN
   BuildRPN --> OutputRPN["Вывод преобразованного выражения в ОПН"]
   OutputRPN --> CallSolve["Вызов функции reshenie_obr_polsk_not"]
   CallSolve --> Calc[Вычисление результата<br>по ОПН]
   Calc --> CheckError{"Есть ли ошибка вычисления?"}
-  CheckError -->|Да|
-  Error["Вывод сообщения об ошибке"]
-  CheckError -->|He|
-OutputResult["Вывод результата"]
+  CheckError -- Да --> Error["Вывод сообщения об ошибке"]
+  CheckError -- He --> OutputResult["Вывод результата"]
   Error --> End
   OutputResult --> End["Конец программы"]
   subgraph "Функция obrat_polsk_not"
@@ -73,28 +71,20 @@ OutputResult["Вывод результата"]
   subgraph "Функция
     reshenie_obr_polsk_not"
     Calc --> InitStack["Инициализация стека для вычислений"]
-    InitStack -->
-    ForEachToken["Обработка каждого токена ОПН"]
+    InitStack --> ForEachToken["Обработка каждого токена ОПН"]
     ForEachToken --> IsNumber{"Токен - число?"}
-    IsNumber -->|Да|
-    PushNumber["Добавить число в стек"]
-    IsNumber -->|Нет|
-    IsFunction{"Токен - функция?"}
-    IsFunction -->|Да|
-    CalcFunction[Вычислить функцию, результат в стек]
-    IsFunction -->|Нет| IsOperator{"Токен - оператор?"}
-    IsOperator -->|Да|
-    CalcOperation["Выполнить операцию, результат в стек"]
+    IsNumber -- Да --> PushNumber["Добавить число в стек"]
+    IsNumber -- Нет --> IsFunction{"Токен - функция?"}
+    IsFunction -- Да --> CalcFunction[Вычислить функцию, результат в стек]
+    IsFunction -- Нет --> IsOperator{"Токен - оператор?"}
+    IsOperator -- Да --> CalcOperation["Выполнить операцию, результат в стек"]
     CalcFunction --> NextToken["Следующий токен"]
     CalcOperation --> NextToken
     PushNumber --> NextToken
-    IsOperator -->|Нет|
-    NextToken
+    IsOperator -- Нет --> NextToken
     NextToken --> MoreTokens{"Есть ещё токены?"}
-    MoreTokens -->|Да|
-    ForEachToken
-    MoreTokens -->|Нет|
-    GetResult["Взять результат c вершины стека"]
+    MoreTokens -- Да --> ForEachToken
+    MoreTokens -- Нет --> GetResult["Взять результат c вершины стека"]
     GetResult --> ReturnResult["Вернуть результат"]
   end
 ```
