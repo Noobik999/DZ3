@@ -45,31 +45,31 @@
 
 ```mermaid
 graph TD
-Start [Начало программы] --> Output1[Выводинструкций<br>o формате чисел и градусах]
-Output1 --> Input[Ввод математического<br>выражения пользователем]
-Input --> CalIRPN[Вызов функции<br>obrat_polsk_not]
-CalIRPN --> ProcessRPN[Преобразование выражения<br>в обратную польскую запись ProcessRPN --> CheckX{Есть ли<br>переменная x?}
-CheckX -->|Да| AskX[Запрос значения x<br>y пользователя]
+Start [Начало программы] --> Output1[Выводинструкцийo формате чисел и градусах]
+Output1 --> Input[Ввод математического выражения пользователем]
+Input --> CalIRPN[Вызов функции obrat_polsk_not]
+CalIRPN --> ProcessRPN[Преобразование выражения в обратную польскую запись ProcessRPN --> CheckX{Есть ли<br>переменная x?}
+CheckX -->|Да| AskX[Запрос значения x y пользователя]
 CheckX -->|Нет| SkipX[Пропустить запрос х]
 AskX --> BuildRPN[Построение ОПН]
 SkipX →→> BuildRPN
-BuildRPN --> OutputRPN[Вывод преобразованного<br>выражения в ОПН]
-OutputRPN --> CallSolve[Вызов функции<br>reshenie_obr_polsk_not]
+BuildRPN --> OutputRPN[Вывод преобразованного выражения в ОПН]
+OutputRPN --> CallSolve[Вызов функции reshenie_obr_polsk_not]
 CallSolve --> Calc[Вычисление результата<br>по ОПН]
-Calc --> CheckError{Есть ли<br>ошибка вычисления?}
-CheckError -->|Да| Error[Вывод сообщения<br>об ошибке]
+Calc --> CheckError{Есть ли ошибка вычисления?}
+CheckError -->|Да| Error[Вывод сообщения об ошибке]
 CheckError -->|He| OutputResult [Вывод результата]
 Error --> End
 OutputResult --> End[Конец программы]
 subgraph "Функция obrat_polsk_not"
 ProcessRPN --> Parse [Посимвольный анализ строки]
-Parse --> Identify[Идентификация элементов:<br>- Числа<br>-Операторы<br>- Функции sin/cos/tan/ctg/exp<br>- Константы pi/e<br>- Скобки<br>- Переменная x]
-Identify --> Shunting Yard[Алгоритм сортировочной<br>станции для ОПН]
+Parse --> Identify[Идентификация элементов: - Числа -Операторы - Функции sin/cos/tan/ctg/exp - Константы pi/e - Скобки - Переменная x]
+Identify --> Shunting Yard[Алгоритм сортировочной станции для ОПН]
 Shunting Yard --> ReturnRPN[Возврат вектора ОПН]
 end
 subgraph "Функция
 reshenie_obr_polsk_not"
-Calc --> InitStack[Инициализация стека<br>для вычислений]
+Calc --> InitStack[Инициализация стека для вычислений]
 InitStack -->
 ForEachToken[Обработка каждого токена ОПН]
 ForEachToken --> IsNumber{Токен - число?}
@@ -77,17 +77,17 @@ IsNumber -->|Да|
 PushNumber [Добавить число в стек]
 IsNumber -->|Нет| IsFunction{Токен - функция?}
 IsFunction -->|Да|
-CalcFunction [Вычислить функцию, <br>результат в стек]
+CalcFunction [Вычислить функцию, результат в стек]
 IsFunction -->|Нет| IsOperator{Токен - оператор?}
 IsOperator -->|Да|
-CalcOperation[Выполнить операцию, <br>результат в стек]
+CalcOperation[Выполнить операцию, результат в стек]
 CalcFunction --> NextToken [Следующий токен]
 CalcOperation --> NextToken
 PushNumber --> NextToken
 IsOperator -->|Нет| NextToken
-NextToken --> MoreTokens{Есть ещё<br>токены?}
+NextToken --> MoreTokens{Есть ещё токены?}
 MoreTokens -->|Да| ForEachToken
-MoreTokens -->|Нет| GetResult [Взять результат<br>c вершины стека]
+MoreTokens -->|Нет| GetResult [Взять результат c вершины стека]
 GetResult --> ReturnResult [Вернуть результат]
 end
 ```
