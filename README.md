@@ -45,23 +45,58 @@
 
 ```mermaid
 graph TD
-    Start[Начало программы] --> Output1[Вывод инструкций]
-    Output1 --> Input[Ввод выражения]
-    Input --> CallRPN[Вызов obrat_polsk_not]
-    CallRPN --> ProcessRPN[Преобразование в ОПН]
-    ProcessRPN --> CheckX{Есть x?}
-    CheckX -->|Да| AskX[Запрос x]
-    CheckX -->|Нет| SkipX[Пропустить]
-    AskX --> BuildRPN[Построение ОПН]
-    SkipX --> BuildRPN
-    BuildRPN --> OutputRPN[Вывод ОПН]
-    OutputRPN --> CallSolve[Вызов reshenie_obr_polsk_not]
-    CallSolve --> Calc[Вычисление]
-    Calc --> CheckError{Ошибка?}
-    CheckError -->|Да| Error[Вывод ошибки]
-    CheckError -->|Нет| OutputResult[Вывод результата]
-    Error --> End[Конец]
-    OutputResult --> End
+    Start[Начало программы] --> Instructions[Вывод инструкций]
+    
+    Instructions --> Input[Ввод математического выражения]
+    
+    Input --> Func1[Вызов функции obrat_polsk_not]
+    
+    Func1 --> Analysis[Анализ выражения]
+    
+    Analysis --> Identify[Идентификация элементов]
+    
+    Identify --> CheckX{Есть переменная x?}
+    
+    CheckX -->|Да| AskX[Запрос значения x]
+    CheckX -->|Нет| ShuntingYard
+    
+    AskX --> ShuntingYard[Алгоритм сортировочной станции]
+    
+    ShuntingYard --> BuildRPN[Формирование ОПН]
+    
+    BuildRPN --> DisplayRPN[Вывод ОПН на экран]
+    
+    DisplayRPN --> Func2[Вызов функции reshenie_obr_polsk_not]
+    
+    Func2 --> InitStack[Инициализация стека]
+    
+    InitStack --> ProcessToken[Обработка токенов ОПН]
+    
+    ProcessToken --> IsNumber{Токен - число?}
+    IsNumber -->|Да| PushNum[Добавить в стек]
+    
+    IsNumber -->|Нет| IsFunc{Токен - функция?}
+    IsFunc -->|Да| CalcFunc[Вычислить функцию]
+    
+    IsFunc -->|Нет| IsOper{Токен - оператор?}
+    IsOper -->|Да| CalcOper[Выполнить операцию]
+    
+    PushNum --> Next1[Следующий токен]
+    CalcFunc --> Next1
+    CalcOper --> Next1
+    IsOper -->|Нет| Next1
+    
+    Next1 --> MoreTokens{Ещё токены?}
+    MoreTokens -->|Да| ProcessToken
+    MoreTokens -->|Нет| GetResult[Итоговый результат]
+    
+    GetResult --> ErrorCheck{Ошибка вычисления?}
+    
+    ErrorCheck -->|Да| DisplayError[Вывод ошибки]
+    ErrorCheck -->|Нет| DisplayResult[Вывод результата]
+    
+    DisplayError --> End[Конец программы]
+    DisplayResult --> End
 ```
 
 - В ходе работы был успешно разработан консольный калькулятор, способный обрабатывать сложные математические выражения. Программа использует эффективные алгоритмы обработки математических выражений.
