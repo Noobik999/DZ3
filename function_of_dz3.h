@@ -12,7 +12,7 @@
 #include <map>
 
 //Данный код был скопирован из 8 лабы, но модернизирован под требования 3 дз
-std::list<char> operators = {'+', '-', '*', '/'};
+std::list<char> operators = {'+', '-', '*', '/', '^'};
 const char func_sin = 's';
 const char func_cos = 'c';
 const char func_tan = 't';
@@ -28,6 +28,9 @@ int prioritety(const char& oper) {
     }
     if (oper == func_sin or oper == func_cos or oper == func_tan or oper == func_ctg or oper == func_exp) {
         return 3;
+    }
+    if (oper == '^') {
+        return 4;
     }
     return 0;
 }
@@ -169,7 +172,7 @@ std::vector<std::string> obrat_polsk_not(const std::string& mat_vyr) {
                 x = input;
                 x_exists = true;
             }
-            else if (i+1 < mat_vyr.length() and std::find(operators.begin(), operators.end(), mat_vyr[i+1]) == operators.end() and mat_vyr[i+1] != 'p' and mat_vyr[i+1] != ' ') {
+            else if (i+1 < mat_vyr.length() and std::find(operators.begin(), operators.end(), mat_vyr[i+1]) == operators.end() and mat_vyr[i+1] != 'p' and mat_vyr[i+1] != ' ' and mat_vyr[i+1] != ')') {
                 std::cout<<"В выражении присутствует ошибка, после x не следует оператор";
                 exit(0);
             }
@@ -252,6 +255,10 @@ float operation(float& a, float& b, const std::string& oper) {
     else if (oper == "*") {
         return a * b;
     }
+    else if (oper == "^") {
+        float y = pow(a, b);
+        return y;
+    }
     else if (oper == "/") {
         if (b != 0) {
             return a / b;
@@ -288,7 +295,7 @@ float reshenie_obr_polsk_not(std::vector<std::string>& vyrajenie) {
         else if (token[0] == '-' and token.size() > 1 and std::isdigit(token[1])) {
             stack_of_numbers.push(std::stof(token));
             }
-        else if (token == "-" or token == "+" or token == "*" or token == "/") {
+        else if (token == "-" or token == "+" or token == "*" or token == "/" or token == "^") {
                 float second = stack_of_numbers.top();
                 stack_of_numbers.pop();
                 float first = stack_of_numbers.top();
